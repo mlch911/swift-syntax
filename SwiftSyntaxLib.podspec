@@ -4,7 +4,7 @@ Pod::Spec.new do |s|
   s.module_name = 'SwiftSyntax'
   s.define
 
-  s.exclude_files = "Sources/#{s.module_name}/Documentation.docc"
+  s.exclude_files = "Sources/#{s.module_name}/*.docc"
 
   s.test_spec do |ts|
     ts.source_files = "Tests/SwiftSyntaxTest/**/*.swift"
