@@ -3,6 +3,8 @@ Pod::Spec.new do |s|
   s.extend SwiftCollections::Spec
   s.define
 
+  s.exclude_files = "Sources/#{s.module_name}/*.docc"
+
   s.dependency 'SwiftSyntaxLib',     "= #{s.version}"
   s.dependency 'SwiftParser',        "= #{s.version}"
   s.dependency 'SwiftDiagnostics',   "= #{s.version}"

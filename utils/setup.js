@@ -2,6 +2,7 @@
 const { execSync } = require('child_process');
 const fs = require('fs-extra');
 const core = require('@actions/core');
+const path = require('path');
 
 const destDir = 'node_modules/swift-syntax';
 const package = JSON.parse(fs.readFileSync('package.json', 'utf8'));
@@ -24,4 +25,19 @@ core.startGroup(`Copy source files for swift-syntax`);
   fs.emptyDirSync(dir);
   fs.copySync(source, dir);
 });
+core.endGroup();
+
+core.startGroup(`Removing .docc directories from Sources`);
+fs.readdirSync('Sources', { withFileTypes: true })
+  .filter(dirent => dirent.isDirectory())
+  .forEach(dirent => {
+    const dirPath = path.join('Sources', dirent.name);
+    fs.readdirSync(dirPath, { withFileTypes: true })
+      .filter(innerDirent => innerDirent.isDirectory() && innerDirent.name.endsWith('.docc'))
+      .forEach(innerDirent => {
+        const doccDirPath = path.join(dirPath, innerDirent.name);
+        console.log(`Removing directory: ${doccDirPath}`);
+        fs.removeSync(doccDirPath);
+      });
+  });
 core.endGroup();
